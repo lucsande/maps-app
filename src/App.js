@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "./services/api";
+import Geolocation from "@react-native-community/geolocation";
 
 import {
   SafeAreaView,
@@ -11,10 +12,15 @@ import {
 } from "react-native";
 
 export default function App() {
-  const [repos, setRepos] = useState([]);
-  const [reposLikes, setReposLikes] = useState({});
+  const [pos, setPos] = useState({});
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    Geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+
+      setPos({ latitude, longitude });
+    });
+  }, []);
 
   return (
     <>
@@ -24,7 +30,7 @@ export default function App() {
           <Text style={styles.welcomeText}>Bem-vindo</Text>
         </View>
 
-        <TouchableOpacity style={styles.button} activeOpacity={.5}>
+        <TouchableOpacity style={styles.button} activeOpacity={0.5}>
           <Text style={styles.buttonText}>Iniciar</Text>
         </TouchableOpacity>
       </SafeAreaView>
@@ -53,7 +59,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 100,
-    width: 300
+    width: 300,
   },
   buttonText: {
     fontSize: 20,
