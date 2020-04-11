@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 
 import AxiosMock from "axios-mock-adapter";
-import api from "../services/api";
+import api from "../services/networking/api";
 const apiMock = new AxiosMock(api);
 
 import App from "../App";
