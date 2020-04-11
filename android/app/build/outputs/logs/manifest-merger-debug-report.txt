@@ -9,6 +9,7 @@ MERGED from [com.facebook.flipper:flipper:0.33.1] /home/lucas/.gradle/caches/tra
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.33.1] /home/lucas/.gradle/caches/transforms-2/files-2.1/fa9d249d56579007dba70f8ee4dd5b3f/flipper-network-plugin-0.33.1/AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.33.1] /home/lucas/.gradle/caches/transforms-2/files-2.1/5a1065d4748ae359265a740b2069d44b/flipper-fresco-plugin-0.33.1/AndroidManifest.xml:8:1-15:12
 MERGED from [:react-native-community_geolocation] /home/lucas/code/lucsande/maps-app-repos/maps-app/node_modules/@react-native-community/geolocation/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-svg] /home/lucas/code/lucsande/maps-app-repos/maps-app/node_modules/react-native-svg/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.react:react-native:0.62.1] /home/lucas/.gradle/caches/transforms-2/files-2.1/e2ac50d5d68acafd05764f309a628e68/jetified-react-native-0.62.1/AndroidManifest.xml:2:1-13:12
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/lucas/.gradle/caches/transforms-2/files-2.1/055a171d10c43231a2795117ecd4c3fd/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [org.webkit:android-jsc:r245459] /home/lucas/.gradle/caches/transforms-2/files-2.1/1ed26cdc1f47a6754ce1546799dd43a1/android-jsc-r245459/AndroidManifest.xml:2:1-11:12
@@ -152,6 +153,8 @@ MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.33.1] /home/lucas/.gra
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.33.1] /home/lucas/.gradle/caches/transforms-2/files-2.1/5a1065d4748ae359265a740b2069d44b/flipper-fresco-plugin-0.33.1/AndroidManifest.xml:11:5-13:41
 MERGED from [:react-native-community_geolocation] /home/lucas/code/lucsande/maps-app-repos/maps-app/node_modules/@react-native-community/geolocation/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-community_geolocation] /home/lucas/code/lucsande/maps-app-repos/maps-app/node_modules/@react-native-community/geolocation/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-svg] /home/lucas/code/lucsande/maps-app-repos/maps-app/node_modules/react-native-svg/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-svg] /home/lucas/code/lucsande/maps-app-repos/maps-app/node_modules/react-native-svg/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.react:react-native:0.62.1] /home/lucas/.gradle/caches/transforms-2/files-2.1/e2ac50d5d68acafd05764f309a628e68/jetified-react-native-0.62.1/AndroidManifest.xml:7:5-9:41
 MERGED from [com.facebook.react:react-native:0.62.1] /home/lucas/.gradle/caches/transforms-2/files-2.1/e2ac50d5d68acafd05764f309a628e68/jetified-react-native-0.62.1/AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /home/lucas/.gradle/caches/transforms-2/files-2.1/055a171d10c43231a2795117ecd4c3fd/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
