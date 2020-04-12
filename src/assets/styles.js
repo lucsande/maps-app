@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.blue,
+    backgroundColor: colors.white,
   },
   welcomeContainer: {
     marginTop: 15,

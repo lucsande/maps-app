@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { PanResponder, Animated } from "react-native";
 
-export const createPanResponder = (pan) => {
+export const createPanResponder = (pan, centralCoords, setCentralCoords) => {
     return useRef(
         PanResponder.create({
           // Ask to be the responder:
@@ -35,6 +35,11 @@ export const createPanResponder = (pan) => {
             const evtOption = {useNativeDriver: false}
             Animated.event([{ x: pan.x }], evtOption)({ x: 0 });
             Animated.event([{ y: pan.y }], evtOption)({ y: 0 });
+
+            const {dx, dy} = gestureState
+            setCentralCoords({dx, dy})
+            console.log(centralCoords)
+            console.log(dx, dy)
           },
           onPanResponderTerminate: (evt, gestureState) => {
             // Another component has become the responder, so this gesture should be cancelled

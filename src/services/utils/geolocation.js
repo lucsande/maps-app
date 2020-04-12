@@ -1,20 +1,29 @@
 import Geolocation from "@react-native-community/geolocation";
 
+// converts number in degrees to radians
+const toRad = (num) => (num * Math.PI) / 180;
+
+// converts number in radians to degrees
+const toDeg = (radian) => (radian * 180) / Math.PI;
+
+const earthRadius = 6378000; // in meters
+
+export const hasCoords = (coords) => {
+  if (coords.latitude && coords.longitude) return true;
+
+  return false;
+};
+
 export const updateCoordsState = (initialCoords, setCoordsState) => {
   Geolocation.getCurrentPosition((position) => {
     const { latitude, longitude } = position.coords;
+
     setCoordsState({ ...initialCoords, latitude, longitude });
   });
 };
 
-// converts number in degrees to radians
-export const toRad = (num) => (num * Math.PI) / 180;
-
-// converts number in radians to degrees
-export const toDeg = (radian) => (radian * 180) / Math.PI;
-
+// MUST BE TESTED!!!!!
 export const haversineDist = (coord1, coord2) => {
-  const earthRadius = 6371; // km
   const lat1 = coord1.latitude;
   const lon1 = coord1.longitude;
   const lat2 = coord2.latitude;
@@ -33,15 +42,15 @@ export const haversineDist = (coord1, coord2) => {
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
 
-  // c is the angular distance in radians
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distInKm = earthRadius * c;
-  const dist = distInKm * 1000;
+  // angular distance in radians
+  const angularDist = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const dist = earthRadius * angularDist;
 
   return dist;
 };
 
-export const bearing = (coord1, coord2) => {
+// MUST BE TESTED!!!!!
+export const bearingInDeg = (coord1, coord2) => {
   const lat1 = toRad(coord1.latitude);
   const lon1 = toRad(coord1.longitude);
   const lat2 = toRad(coord2.latitude);
@@ -57,40 +66,54 @@ export const bearing = (coord1, coord2) => {
   return bearing;
 };
 
+// MUST BE TESTED!!!!!
 export const deltaXandY = (coord1, coord2) => {
   dist = haversineDist(coord1, coord2);
-  bearing = bearing(coord1, coord2);
+  bearing = bearingInDeg(coord1, coord2);
 
-  dx = Math.cos(bearing % 90) * dist;
-  dy = Math.sin(bearing % 90) * dist;
+  dx = Math.cos(toRad(bearing % 90)) * dist;
+  dy = Math.sin(toRad(bearing % 90)) * dist;
 
   return { dx, dy };
 };
 
-export const destPoint = (dx, dy) => {
+// using the movement deltas, find bearing in radians
+export const bearingInRadFromDeltas = (dx, dy) => {
+  // get bearing in radians, considering movement happens in first trigonometry quadrant
+  let bearing = Math.atan(dx / dy);
+  // convert to second quadrant
+  if (dx < 0 && dy >= 0) bearing = toRad(360) - bearing;
+  // convert to third quadrant
+  if (dx < 0 && dy < 0) bearing += toRad(180);
+  // convert to fourth quadrant
+  if (dx >= 0 && dy < 0) bearing = toRad(180) - bearing;
+
+  return bearing;
+};
+
+// TESTED!!!!!
+// finds coords for a destination point, knowing start point and delta x and delta y
+export const destPoint = (coord1, dx, dy) => {
+  const lat1 = toRad(coord1.latitude);
+  const lon1 = toRad(coord1.longitude);
+
   // the sum of the squares of the catheti is equal to the square of the hypotenuse
   const dist = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-  // bearing = ????
+  const bearing = bearingInRadFromDeltas(dx, dy);
 
-  
-  // https://www.movable-type.co.uk/scripts/latlong.html
-  var φ2 = Math.asin(
-    Math.sin(φ1) * Math.cos(d / R) +
-      Math.cos(φ1) * Math.sin(d / R) * Math.cos(brng)
+  const lat2 = Math.asin(
+    Math.sin(lat1) * Math.cos(dist / earthRadius) +
+      Math.cos(lat1) * Math.sin(dist / earthRadius) * Math.cos(bearing)
   );
-  var λ2 =
-    λ1 +
+  const lon2 =
+    lon1 +
     Math.atan2(
-      Math.sin(brng) * Math.sin(d / R) * Math.cos(φ1),
-      Math.cos(d / R) - Math.sin(φ1) * Math.sin(φ2)
+      Math.sin(bearing) * Math.sin(dist / earthRadius) * Math.cos(lat1),
+      Math.cos(dist / earthRadius) - Math.sin(lat1) * Math.sin(lat2)
     );
 
-    // where	φ is latitude, λ is longitude, θ is the bearing (clockwise from north),
-    // δ is the angular distance d/R; d being the distance travelled, R the earth’s radius
-
-    // The longitude can be normalised to −180…+180 using (lon+540)%360-180
-
-    // For final bearing, simply take the initial bearing from the end point to the start point 
-    // and reverse it with (brng+180)%360.
+  return { latitude: toDeg(lat2), longitude: toDeg(lon2) };
 };
+
+// credits for a great part of this calculations goes to https://www.movable-type.co.uk/scripts/latlong.html

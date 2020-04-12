@@ -6,7 +6,7 @@ import { MapScreen } from "./screens/MapScreen";
 
 import { styles } from "./assets/styles";
 import { colors } from "./assets/colors";
-import { updateCoordsState } from "./services/utils/geolocation";
+import { updateCoordsState, hasCoords } from "./services/utils/geolocation";
 
 export default function App() {
   const [initialCoords, setInitialCoords] = useState({});
@@ -15,13 +15,17 @@ export default function App() {
     updateCoordsState(initialCoords, setInitialCoords);
   }, []);
 
+  const waitForCoordsToShowMap = () => {
+    if (hasCoords(initialCoords))
+      return <MapScreen initialCoords={initialCoords} />;
+  };
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor={colors.blue} />
       <SafeAreaView style={styles.container}>
         {/* <WelcomeScreen initialCoords={initialCoords} /> */}
-
-        <MapScreen initialCoords={initialCoords} />
+        {waitForCoordsToShowMap()}
       </SafeAreaView>
     </>
   );

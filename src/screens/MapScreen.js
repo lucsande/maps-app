@@ -1,34 +1,33 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Animated, Dimensions } from "react-native";
+import { Animated } from "react-native";
 import { Svg, Circle, Rect } from "react-native-svg";
+
 import { colors } from "../assets/colors";
+import { SvgCircle } from "../components/SvgCircle";
 
 import api from "../services/networking/api";
+import { getSvgArea } from "../services/utils/svgDrawing";
 import { createPanResponder } from "../services/utils/createPanResponder";
 
-// default: 1m = 2px!
-// default: user position(the circle) startin middle of screen
-// all other objects are put in relation to initial user position,
-// converting the difference in latitude-longitude to distance in meters (use formula),
-// and then, considering 2px per meter, get object's position on screen
+// default: 1m = 1px!
+// default: user position(the circle) starts in the middle of the screen
+
+// all other objects are put in relation to centralCoord, which should always be in the middle of the screen.
+// convert the difference in latitude-longitude to distance in meters (use haversine formula),
+// and then, considering 1px per meter, get object's position on screen relatice to centralCoord
 
 export const MapScreen = ({ initialCoords }) => {
   const [centralCoords, setCentralCoords] = useState({});
-  
+  const [userCoords, setUserCoords] = useState({});
+
   useEffect(() => {
-    setCentralCoords(initialCoords);
+    setCentralCoords({...initialCoords});
+    setUserCoords(initialCoords);
   }, []);
-
-  const screen = Dimensions.get("screen");
-  screen["width"] = Math.floor(screen.width);
-  screen["height"] = Math.floor(screen.height);
-  screen["center"] = {
-    x: Math.floor(screen.width / 2),
-    y: Math.floor(screen.height / 2),
-  };
-
+  
+  const svgArea = getSvgArea();
   const pan = useRef(new Animated.ValueXY()).current;
-  const panResponder = createPanResponder(pan);
+  const panResponder = createPanResponder(pan, centralCoords, setCentralCoords);
 
   const handlePress = (event) => {
     const { locationX, locationY } = event.nativeEvent;
@@ -44,16 +43,14 @@ export const MapScreen = ({ initialCoords }) => {
       {...panResponder.panHandlers}
     >
       <Svg
-        width={`${screen.width / 2}`}
-        height={`${screen.height / 2}`}
-        style={{ backgroundColor: "red" }}
+        width={`${svgArea.width}`}
+        height={`${svgArea.height}`}
+        style={{ backgroundColor: colors.blue }}
       >
-        <Circle
-          cx={`${screen.center.x / 2}`}
-          cy={`${screen.center.y / 2}`}
-          r="10"
-          stroke={colors.white}
-          strokeWidth="1"
+        <SvgCircle
+          svgArea={svgArea}
+          elementCoords={userCoords}
+          centralCoords={centralCoords}
         />
       </Svg>
     </Animated.View>
