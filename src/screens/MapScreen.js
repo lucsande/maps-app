@@ -9,10 +9,15 @@ import { createPanResponder } from "../services/utils/createPanResponder";
 // default: 1m = 2px!
 // default: user position(the circle) startin middle of screen
 // all other objects are put in relation to initial user position,
-// converting the difference in latitude-longitude toa distance and meters, and then considering 32px per meter
+// converting the difference in latitude-longitude to distance in meters (use formula),
+// and then, considering 2px per meter, get object's position on screen
 
 export const MapScreen = ({ initialCoords }) => {
   const [centralCoords, setCentralCoords] = useState({});
+  
+  useEffect(() => {
+    setCentralCoords(initialCoords);
+  }, []);
 
   const screen = Dimensions.get("screen");
   screen["width"] = Math.floor(screen.width);
@@ -38,15 +43,18 @@ export const MapScreen = ({ initialCoords }) => {
       }}
       {...panResponder.panHandlers}
     >
-      <Svg width={`${screen.width}`} height={`${screen.height}`}>
+      <Svg
+        width={`${screen.width / 2}`}
+        height={`${screen.height / 2}`}
+        style={{ backgroundColor: "red" }}
+      >
         <Circle
-          cx={`${screen.center.x}`}
-          cy={`${screen.center.y}`}
+          cx={`${screen.center.x / 2}`}
+          cy={`${screen.center.y / 2}`}
           r="10"
           stroke={colors.white}
           strokeWidth="1"
         />
-
       </Svg>
     </Animated.View>
   );

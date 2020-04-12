@@ -13,10 +13,10 @@ export const createPanResponder = (pan) => {
           onPanResponderGrant: (evt, gestureState) => {
             // gesture has started. 
             // store the object's initial position in the offset
-            pan.setOffset({
-              x: pan.x._value,
-              y: pan.y._value,
-            });
+            // pan.setOffset({
+            //   x: pan.x._value,
+            //   y: pan.y._value,
+            // });
           },
           onPanResponderMove: (evt, gestureState) => {
             // make pan equal to gesture's delta of movement
@@ -31,7 +31,10 @@ export const createPanResponder = (pan) => {
           onPanResponderTerminationRequest: (evt, gestureState) => false,
           onPanResponderRelease: (evt, gestureState) => {
             // add offset(original position) to pan(gesture's delta)
-            pan.flattenOffset();
+            // pan.flattenOffset();
+            const evtOption = {useNativeDriver: false}
+            Animated.event([{ x: pan.x }], evtOption)({ x: 0 });
+            Animated.event([{ y: pan.y }], evtOption)({ y: 0 });
           },
           onPanResponderTerminate: (evt, gestureState) => {
             // Another component has become the responder, so this gesture should be cancelled
